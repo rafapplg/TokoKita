@@ -44,6 +44,20 @@ app.get("/api/products", (req, res) => {
     res.json({ status: "success", data: produk });
 });
 
+// GET /api/products/search?nama=... -> mencari produk berdasarkan nama
+app.get("/api/products/search", (req, res) => {
+    const { nama } = req.query;
+
+    if (!nama) {
+        return res.status(400).json({ status: "error", message: "Query parameter nama wajib diisi" });
+    }
+
+    const kataKunci = nama.toLowerCase();
+    const hasil = produk.filter((p) => p.nama.toLowerCase().includes(kataKunci));
+
+    res.json({ status: "success", data: hasil });
+});
+
 // GET /api/products/:id -> mengambil satu produk bers=dasarka nid
 app.get("/api/products/:id", (req, res) => {
     const id = Number(req.params.id);
