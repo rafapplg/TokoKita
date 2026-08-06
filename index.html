@@ -13,30 +13,30 @@
     
     <!-- NAVBAR -->
         <header class="bg-white shadow-sm sticky top-0 z-10">
-            <div class="max-2-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <!-- Logo Toko -->
             <h1 class="text-xl font-bold text-blue-700">TokoKita</h1>
 
             <!-- Menu Navigasi: Tersembunyi di mobile, muncul di tablet keatas -->
             <nav class="hidden md:flex gap-6 text-gray-600">
-                <a href="#hero" class="hover: text-blue-700">Beranda</a>
-                <a href="#catalog" class="hover: text-blue-700">Katalog</a>
-                <a href="#about" class="hover: text-blue-700">Tentang Kami</a>
+                <a href="#hero" class="hover:text-blue-700">Beranda</a>
+                <a href="#catalog" class="hover:text-blue-700">Katalog</a>
+                <a href="#about" class="hover:text-blue-700">Tentang Kami</a>
             </nav>
 
             
             <div class="flex items-center gap-3">
             <!-- Tombol Keranjang -->
-            <button id="tombol-keranjang" class="bg-blue-700 text-white px-4 py-2 rounded-g text-sm">
+            <button id="tombol-keranjang" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
             Keranjang (0)
             </button>
             <!-- Ikon Hamburger, hanya tampil di mobile -->
              <div id="menu-mobile" class="hidden absolute left-0
              top-full mt-2 w-full bg-white shadow-lg rounded-b-xl p-4 md:hidden z-28">
              <ul class="flex flex-col gap-3">
-                <a href="#hero" class="hover: text-blue-700">Beranda</a>
-                <a href="#catalog" class="hover: text-blue-700">Katalog</a>
-                <a href="#about" class="hover: text-blue-700">Tentang Kami</a>
+                <a href="#hero" class="hover:text-blue-700">Beranda</a>
+                <a href="#catalog" class="hover:text-blue-700">Katalog</a>
+                <a href="#about" class="hover:text-blue-700">Tentang Kami</a>
              </ul>
              </div>
             <button id="tombol-hamburger" class="md:hidden text-gray-700 text-2xl">&#9776</button>
@@ -45,7 +45,7 @@
 
     <main>
         <section id="hero"><div class="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
-        <div class="max-w-7xlmx-auto px-4 py-16 text-center">
+        <div class="max-w-7xl mx-auto px-4 py-16 text-center">
         <h2 class="text-3xl md:text-5xl font-bold mb-4">
             Belanja Mudah, Harga Bersahabat
         </h2>
@@ -62,58 +62,74 @@
         </section>
         <section id="catalog"><div class ="max-w-7xl mx-auto px-4 py-12">
         <h3 class="text-2xl font-bold text-gray-800 mb-8">Produk Pilihan</h3>
-        <!-- grid-cols-2 di HP, md:grid-cols-3 di tablet, lg:grid-cols-4 di desktop --> <div id="grid-katalog" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- grid-cols-2 di HP, md:grid-cols-3 di tablet, lg:grid-cols-4 di desktop -->
+        <div id="grid-katalog" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <!-- Kartu Produk dengan Badge Diskon -->
-        <div class="relative bg-white rounded-xl shadow hover: shadow-lg-transition p-4"> <span class="absolute top-2 left-2 bg-yellow-400 text-xs font-bold px-2 py-1-rounded">DISKON 99,9%</span>
-        <img src="assets/images/IP.png"alt="Iphone 17 Pro Max 16/1TB" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Iphone 17 Pro Max 16/1TB</h4>
-        <p class="text-blue-700 font-bold mt-1">Rp 1</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white-py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-        </button>
+        <div class="relative bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <span class="absolute top-2 left-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded">DISKON 99,9%</span>
+          <img src="assets/images/IP.png" alt="Iphone 17 Pro Max 16/1TB" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Iphone 17 Pro Max 16/1TB</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 1</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
         <!-- Kartu Produk tanpa Badge (versi standar) -->
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/Rolek.png" alt="Rolex Dajetsu 41" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Rolex Dajetsu 41</h4> <p class="text-blue-700 font-bold mt-1">Rp 207.999.999</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/Rolek.png" alt="Rolex Dajetsu 41" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Rolex Dajetsu 41</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 207.999.999</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/RedMejik.jpg" alt="Red Magic 10 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Red Magic 10 Pro</h4> <p class="text-blue-700 font-bold mt-1">Rp 22.999.000</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/RedMejik.jpg" alt="Red Magic 10 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Red Magic 10 Pro</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 22.999.000</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/sumsang.png" alt="Samsung Z Fold 7" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Samsung Z Fold 7</h4> <p class="text-blue-700 font-bold mt-1">Rp 32.599.000</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/sumsang.png" alt="Samsung Z Fold 7" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Samsung Z Fold 7</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 32.599.000</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/Rilme.png" alt="Realme GT 8 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Realme GT 8 Pro</h4> <p class="text-blue-700 font-bold mt-1">Rp 10.999.999</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/Rilme.png" alt="Realme GT 8 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Realme GT 8 Pro</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 10.999.999</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/oppo.png" alt="Oppo Reno 15" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Oppo Reno 15</h4> <p class="text-blue-700 font-bold mt-1">Rp 6.999.000</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/oppo.png" alt="Oppo Reno 15" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Oppo Reno 15</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 6.999.000</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/vivo.jpg" alt="Vivo X200" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Vivo X200</h4> <p class="text-blue-700 font-bold mt-1">Rp 17.999.999</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/vivo.jpg" alt="Vivo X200" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Vivo X200</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 17.999.999</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
-        <div class="bg-white rounded-xl: shadow hover:shadow-lg transition p-4"> <img src="assets/images/infinix.png" alt="Infinix GT 20 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-        <h4 class="font-semibold text-gray-800">Infinix GT 20 Pro</h4> <p class="text-blue-700 font-bold mt-1">Rp 3.999.999</p>
-        <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-        Tambah ke Keranjang
-            </button>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="assets/images/infinix.png" alt="Infinix GT 20 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
+          <h4 class="font-semibold text-gray-800">Infinix GT 20 Pro</h4>
+          <p class="text-blue-700 font-bold mt-1">Rp 3.999.999</p>
+          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+            Tambah ke Keranjang
+          </button>
         </div>
 
         <!-- Salin salah satu kartu di atas untuk produk ke-3 s.d. ke-8 -->
@@ -143,27 +159,26 @@
 
         <!-- flex-col di mobile, flex-row di tablet ke atas --> 
         <div class="flex flex-col md:flex-row gap-6">
-        <div class="flex-1 bg-gray-50 rounded-l p-6">
-        <p class="text-gray-600 italic">
-        "Pengiriman cepat dan barangnya sesuai foto. Recommended!"
-        </p>
-        <p class="mt-4 font-semibold text-gray-800">— Cefriska Arafina Riandi, Depok</p>
-        </div>
+          <div class="flex-1 bg-gray-50 rounded-xl p-6">
+            <p class="text-gray-600 italic">
+              "Pengiriman cepat dan barangnya sesuai foto. Recommended!"
+            </p>
+            <p class="mt-4 font-semibold text-gray-800">— Cefriska Arafina Riandi, Depok</p>
+          </div>
 
-        <div class="flex-1 bg-gray-50 rounded-xl p-6">
-        <p class="text-gray-600 italic">
-        "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
-        </p>
-        <p class="mt-4 font-semibold text-gray-800">— Riracha Phondechaphiphat, Thailand</p>
+          <div class="flex-1 bg-gray-50 rounded-xl p-6">
+            <p class="text-gray-600 italic">
+              "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
+            </p>
+            <p class="mt-4 font-semibold text-gray-800">— Riracha Phondechaphiphat, Thailand</p>
+          </div>
 
-        <div class="flex-1 bg-gray-50 rounded-xl p-6">
-        <p class="text-gray-600 italic">
-        "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
-        </p>
-        <p class="mt-4 font-semibold text-gray-800">— Chunsik, Multiverse</p>
-        
-        </div>
-        </div>
+          <div class="flex-1 bg-gray-50 rounded-xl p-6">
+            <p class="text-gray-600 italic">
+              "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
+            </p>
+            <p class="mt-4 font-semibold text-gray-800">— Chunsik, Multiverse</p>
+          </div>
         </div>
         </div>
 
@@ -183,8 +198,8 @@
     <div>
     <h5 class="text-white font-semibold mb-3">Tautan Cepat</h5>
     <ul class="space-y-2">
-    <li><a href="#catalog" class="hover: text-white">Katalog</a></li>
-    <li><a href="#about" class="hover: text-white">Tentang Kami</a></li>
+    <li><a href="#catalog" class="hover:text-white">Katalog</a></li>
+    <li><a href="#about" class="hover:text-white">Tentang Kami</a></li>
 
     </ul>
     </div>
@@ -197,7 +212,7 @@
     </div>
     </div>
 
-    <hr class="border-gray-700-my-6" />
+    <hr class="border-gray-700 my-6" />
     <p class="text-center text-xs">
     &copy; 2026 TokoKita. Dibuat dalam Bootcamp Fullstack Web Development.
     </p>
