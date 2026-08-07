@@ -6,221 +6,517 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="TokoKita - belanja online mudah dan terpercaya" />
     <title>TokoKita - Belanja Online Mudah</title>
-    <!-- Memuat Tailwind CSS langsung dari CDN, tanpa perlu instalasi -->
+    <!-- Memuat Tailwind CSS langsung dari CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
     
-    <!-- NAVBAR -->
-        <header class="bg-white shadow-sm sticky top-0 z-10">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <!-- Logo Toko -->
-            <h1 class="text-xl font-bold text-blue-700">TokoKita</h1>
+    <!-- CSS Custom Tambahan untuk Efek Animasi Modal dan Tampilan Modern -->
+    <style>
+      :root {
+        color-scheme: dark;
+      }
 
-            <!-- Menu Navigasi: Tersembunyi di mobile, muncul di tablet keatas -->
-            <nav class="hidden md:flex gap-6 text-gray-600">
-                <a href="#hero" class="hover:text-blue-700">Beranda</a>
-                <a href="#catalog" class="hover:text-blue-700">Katalog</a>
-                <a href="#about" class="hover:text-blue-700">Tentang Kami</a>
+      body {
+        background: radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 28%),
+                    radial-gradient(circle at bottom right, rgba(59,130,246,0.14), transparent 18%),
+                    #020617;
+      }
+
+      .modal-active {
+        display: flex !important;
+        animation: fadeIn 0.24s ease-out forwards;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      @keyframes float-card {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+
+      .hero-card {
+        background: rgba(15,23,42,0.92);
+        border: 1px solid rgba(148,163,184,0.14);
+        box-shadow: 0 30px 80px rgba(15,23,42,0.28);
+        backdrop-filter: blur(18px);
+      }
+
+      .product-card {
+        background: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
+        border: 1px solid rgba(148,163,184,0.12);
+      }
+
+      .product-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .btn-primary-glow {
+        background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+        box-shadow: 0 18px 30px rgba(59,130,246,0.22);
+      }
+
+      .btn-secondary-glow {
+        background: rgba(148,163,184,0.10);
+        border: 1px solid rgba(148,163,184,0.18);
+        backdrop-filter: blur(12px);
+      }
+
+      .feature-chip {
+        background: rgba(59,130,246,0.08);
+        border: 1px solid rgba(59,130,246,0.18);
+      }
+
+      .testimonial-card {
+        background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(30,41,59,0.94));
+        border: 1px solid rgba(148,163,184,0.12);
+      }
+
+      .hero-deco {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(72px);
+        opacity: .55;
+        pointer-events: none;
+      }
+
+      .hero-deco.one {
+        width: 15rem;
+        height: 15rem;
+        background: rgba(14,165,233,0.24);
+        top: -2rem;
+        left: -2rem;
+      }
+
+      .hero-deco.two {
+        width: 11rem;
+        height: 11rem;
+        background: rgba(59,130,246,0.18);
+        bottom: -2.5rem;
+        right: 1rem;
+      }
+    </style>
+</head>
+
+<!-- MODAL DETAIL PRODUK -->
+<div id="modal-detail" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden justify-center items-center z-50 p-4 transition-all duration-300">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="bg-blue-700 text-white p-4 flex justify-between items-center">
+            <h3 class="text-lg font-bold">Detail Produk</h3>
+            <button id="btn-tutup-detail" class="text-white/80 hover:text-white font-bold text-xl hover:bg-blue-800 w-8 h-8 rounded-full flex items-center justify-center transition">&times;</button>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+                <img id="detail-gambar" src="assets/images/product-placeholder.svg" alt="Gambar Produk" class="w-full h-56 object-cover" />
+            </div>
+            <h4 id="detail-nama" class="text-xl font-bold text-gray-800">Nama Produk</h4>
+            <p id="detail-harga" class="text-lg font-bold text-blue-700">Rp 0</p>
+            <p id="detail-stok" class="text-sm text-slate-600">Stok tersedia: 0</p>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <p class="text-xs text-gray-400 font-semibold uppercase mb-1">Deskripsi / Keterangan</p>
+                <p id="detail-keterangan" class="text-sm text-gray-600 leading-relaxed">Informasi detail produk akan tampil di sini.</p>
+            </div>
+        </div>
+
+        <div class="bg-gray-50 border-t p-4 flex justify-end">
+            <button id="btn-tutup-detail-bawah" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-xl text-sm font-semibold transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
+<body class="bg-slate-950 text-slate-100 relative overflow-x-hidden">
+    <div class="hero-deco one"></div>
+    <div class="hero-deco two"></div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-20 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 shadow-[0_15px_60px_-35px_rgba(15,23,42,0.9)]">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+            <!-- Logo Toko -->
+            <a href="#hero" class="inline-flex items-center gap-3 text-white font-semibold text-xl">
+                <span class="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-400 to-indigo-500 shadow-lg shadow-sky-500/20">TK</span>
+                TokoKita
+            </a>
+
+            <!-- Menu Navigasi -->
+            <nav class="hidden md:flex gap-8 text-slate-300 font-medium">
+                <a href="#hero" class="hover:text-white transition">Beranda</a>
+                <a href="#catalog" class="hover:text-white transition">Katalog</a>
+                <a href="#about" class="hover:text-white transition">Tentang Kami</a>
             </nav>
 
-            
             <div class="flex items-center gap-3">
-            <!-- Tombol Keranjang -->
-            <button id="tombol-keranjang" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
-            Keranjang (0)
-            </button>
-            <!-- Ikon Hamburger, hanya tampil di mobile -->
-             <div id="menu-mobile" class="hidden absolute left-0
-             top-full mt-2 w-full bg-white shadow-lg rounded-b-xl p-4 md:hidden z-28">
-             <ul class="flex flex-col gap-3">
-                <a href="#hero" class="hover:text-blue-700">Beranda</a>
-                <a href="#catalog" class="hover:text-blue-700">Katalog</a>
-                <a href="#about" class="hover:text-blue-700">Tentang Kami</a>
-             </ul>
-             </div>
-            <button id="tombol-hamburger" class="md:hidden text-gray-700 text-2xl">&#9776</button>
+                <!-- Tombol Keranjang -->
+                <button id="tombol-keranjang" class="btn-primary-glow text-white px-4 py-2 rounded-2xl text-sm font-semibold flex items-center gap-2 shadow-lg transition hover:brightness-110">
+                    <span>🛒</span> Keranjang (<span id="jumlah-keranjang-text">0</span>)
+                </button>
+                
+                <!-- Ikon Hamburger -->
+                <div id="menu-mobile" class="hidden absolute left-0 top-full mt-2 w-full bg-slate-950/98 shadow-2xl rounded-b-3xl p-4 md:hidden z-28 border-t border-slate-800">
+                    <ul class="flex flex-col gap-3 text-slate-200">
+                        <a href="#hero" class="hover:text-white transition">Beranda</a>
+                        <a href="#catalog" class="hover:text-white transition">Katalog</a>
+                        <a href="#about" class="hover:text-white transition">Tentang Kami</a>
+                    </ul>
+                </div>
+                <button id="tombol-hamburger" class="md:hidden text-slate-200 text-2xl">&#9776;</button>
             </div>
+        </div>
     </header>
 
     <main>
-        <section id="hero"><div class="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
-        <div class="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">
-            Belanja Mudah, Harga Bersahabat
-        </h2>
-        <p class="text-blue-100 mb-6">
-         Temukan berbagai produk pilihan hanya di Tokokita
-        </p>
-        <a href="#catalog"
-        class="bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-blue-50
-        transition">
-        Lihat Katalog
-                </a>
+        <section id="hero" class="relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 py-20 lg:py-24">
+                <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+                    <div class="space-y-8">
+                        <div class="inline-flex items-center gap-2 rounded-full px-4 py-2 feature-chip text-sky-100 text-xs uppercase tracking-[0.3em] font-semibold">
+                            <span class="inline-flex h-2.5 w-2.5 rounded-full bg-sky-400"></span>
+                            Pilihan Terbaik untuk Belanja Modern
+                        </div>
+                        <div class="space-y-4">
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+                                Belanja online lebih cepat, aman, dan penuh gaya.
+                            </h1>
+                            <p class="max-w-3xl text-slate-300 text-base sm:text-lg leading-8">
+                                Temukan produk populer dengan pengalaman visual yang segar. Cocok untuk semua kebutuhan belanjaanmu di satu tempat.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <a href="#catalog" class="btn-primary-glow inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold text-white transition">Lihat Katalog</a>
+                            <a href="#about" class="btn-secondary-glow inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold text-slate-100 transition hover:text-white">Tentang Kami</a>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-center">
+                                <p class="text-sky-300 text-sm font-semibold">100+ Produk</p>
+                            </div>
+                            <div class="rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-center">
+                                <p class="text-sky-300 text-sm font-semibold">24/7 Support</p>
+                            </div>
+                            <div class="rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-center">
+                                <p class="text-sky-300 text-sm font-semibold">Pengiriman Cepat</p>
+                            </div>
+                            <div class="rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-center">
+                                <p class="text-sky-300 text-sm font-semibold">Garansi Asli</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-card p-8 rounded-[38px] overflow-hidden relative">
+                        <div class="absolute -left-10 top-12 w-28 h-28 rounded-full bg-sky-500/20"></div>
+                        <div class="absolute -right-12 bottom-10 w-32 h-32 rounded-full bg-indigo-500/20"></div>
+                        <div class="space-y-6">
+                            <div class="rounded-3xl bg-slate-900/80 border border-slate-800 p-5 shadow-xl">
+                                <div class="flex items-center justify-between gap-4">
+                                    <div>
+                                        <p class="text-slate-400 text-sm uppercase tracking-[0.2em]">Promo Spesial</p>
+                                        <h2 class="text-2xl font-bold text-white">Diskon Super</h2>
+                                    </div>
+                                    <span class="inline-flex rounded-3xl bg-sky-500/15 px-3 py-2 text-sky-200 text-xs font-semibold">Hemat sampai 99%</span>
+                                </div>
+                            </div>
+
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div class="rounded-3xl bg-slate-900/90 p-5 border border-slate-800">
+                                    <p class="text-slate-400 text-sm">Terlaris</p>
+                                    <p class="mt-3 text-xl font-semibold text-white">Smartphone</p>
+                                </div>
+                                <div class="rounded-3xl bg-slate-900/90 p-5 border border-slate-800">
+                                    <p class="text-slate-400 text-sm">Rekomendasi</p>
+                                    <p class="mt-3 text-xl font-semibold text-white">Jam Tangan</p>
+                                </div>
+                            </div>
+
+                            <div class="rounded-[28px] border border-slate-800 bg-slate-950/75 p-6">
+                                <p class="text-slate-300 text-sm">TokoKita menghadirkan tampilan belanja premium dengan antarmuka yang ringan dan responsif.</p>
+                                <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                                    <div class="rounded-3xl bg-slate-900/90 p-4">
+                                        <p class="text-slate-400 text-[13px]">Koleksi Gadget</p>
+                                        <p class="mt-2 text-lg font-semibold text-white">8+ pilihan</p>
+                                    </div>
+                                    <div class="rounded-3xl bg-slate-900/90 p-4">
+                                        <p class="text-slate-400 text-[13px]">Kirim Aman</p>
+                                        <p class="mt-2 text-lg font-semibold text-white">Terpercaya</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-        </section>
-        <section id="catalog"><div class ="max-w-7xl mx-auto px-4 py-12">
-        <h3 class="text-2xl font-bold text-gray-800 mb-8">Produk Pilihan</h3>
-        <!-- grid-cols-2 di HP, md:grid-cols-3 di tablet, lg:grid-cols-4 di desktop -->
-        <div id="grid-katalog" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- Kartu Produk dengan Badge Diskon -->
-        <div class="relative bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <span class="absolute top-2 left-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded">DISKON 99,9%</span>
-          <img src="assets/images/IP.png" alt="Iphone 17 Pro Max 16/1TB" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Iphone 17 Pro Max 16/1TB</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 1</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <!-- Kartu Produk tanpa Badge (versi standar) -->
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/Rolek.png" alt="Rolex Dajetsu 41" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Rolex Dajetsu 41</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 207.999.999</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/RedMejik.jpg" alt="Red Magic 10 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Red Magic 10 Pro</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 22.999.000</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/sumsang.png" alt="Samsung Z Fold 7" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Samsung Z Fold 7</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 32.599.000</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/Rilme.png" alt="Realme GT 8 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Realme GT 8 Pro</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 10.999.999</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/oppo.png" alt="Oppo Reno 15" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Oppo Reno 15</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 6.999.000</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/vivo.jpg" alt="Vivo X200" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Vivo X200</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 17.999.999</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-          <img src="assets/images/infinix.png" alt="Infinix GT 20 Pro" class="w-full h-40 object-contain rounded-lg mb-3 bg-gray-100"/>
-          <h4 class="font-semibold text-gray-800">Infinix GT 20 Pro</h4>
-          <p class="text-blue-700 font-bold mt-1">Rp 3.999.999</p>
-          <button class="btn-tambah-keranjang w-full mt-3 bg-blue-700 text-white py-2 rounded-lg text-sm hover:bg-blue-800 transition">
-            Tambah ke Keranjang
-          </button>
-        </div>
-
-        <!-- Salin salah satu kartu di atas untuk produk ke-3 s.d. ke-8 -->
-
-        </div>
-        </div>
         </section>
 
-        <form id="form-produk" class="bg-white rounded-xl shadow p-6 mt-8 max-w-md mx-auto"> <h4 class="font-semibold text-gray-800 mb-4">Tambah Produk Baru</h4>
-        <label class="block text-sm text-gray-600 mb-1">Nama Produk</label>
-        <input type="text" id="input-nama" required class="w-full border rounded-lg px-3 py-2 mb-3" />
-        <label class="block text-sm text-gray-600 mb-1">Harga (Rp)</label>
-        <input type="number" id="input-harga" required min="0" class="w-full border rounded-lg px-3 py-2 mb-3" />
-        <p id="pesan-error" class="text-red-600 text-sm mb-3 hidden"></p>
-        <button type="submit"
-        class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800">
-        Tambahkan Produk
-        </button>
+        <section id="catalog">
+            <div class="max-w-7xl mx-auto px-4 py-12">
+                <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-8">
+                    <div>
+                        <p class="text-sky-300 uppercase tracking-[0.3em] text-xs font-semibold mb-2">Koleksi Eksklusif</p>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white">Produk Pilihan</h3>
+                    </div>
+                    <p class="max-w-2xl text-slate-400">Semua produk disajikan dengan tampilan yang lebih hidup dan detail lengkap.</p>
+                </div>
+                <div id="grid-katalog" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Kartu Produk 1 -->
+                    <div class="relative product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="absolute top-2 left-2 bg-sky-500/15 text-sky-200 text-[11px] font-semibold px-2 py-1 rounded-2xl shadow-sm">DISKON 99,9%</span>
+                            <img src="assets/images/IP.png" alt="Iphone 17 Pro Max 16/1TB" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Iphone 17 Pro Max 16/1TB</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 1</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Iphone 17 Pro Max 16/1TB" data-gambar="assets/images/IP.png" data-harga="1" data-keterangan="Iphone 17 Pro Max varian 16GB RAM dan 1TB Storage. Diskon spesial!">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Iphone 17 Pro Max 16/1TB" data-harga="1" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 2 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/Rolek.png" alt="Rolex Dajetsu 41" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Rolex Dajetsu 41</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 207.999.999</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Rolex Dajetsu 41" data-gambar="assets/images/Rolek.png" data-harga="207999999" data-keterangan="Jam tangan mewah Rolex Datejust 41 original garansi resmi.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Rolex Dajetsu 41" data-harga="207999999" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 3 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/RedMejik.jpg" alt="Red Magic 10 Pro" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Red Magic 10 Pro</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 22.999.000</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Red Magic 10 Pro" data-gambar="assets/images/RedMejik.jpg" data-harga="22999000" data-keterangan="Smartphone gaming terbaik dengan kipas pendingin internal dan chipset terbaru.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Red Magic 10 Pro" data-harga="22999000" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 4 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/sumsang.png" alt="Samsung Z Fold 7" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Samsung Z Fold 7</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 32.599.000</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Samsung Z Fold 7" data-gambar="assets/images/sumsang.png" data-harga="32599000" data-keterangan="HP lipat flagship dari Samsung dengan layar AMOLED luas dan multitasking canggih.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Samsung Z Fold 7" data-harga="32599000" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 5 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/Rilme.png" alt="Realme GT 8 Pro" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Realme GT 8 Pro</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 10.999.999</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Realme GT 8 Pro" data-gambar="assets/images/Rilme.png" data-harga="10999999" data-keterangan="Flagship killer Realme dengan pengisian daya super cepat dan chipset gahar.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Realme GT 8 Pro" data-harga="10999999" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 6 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/oppo.png" alt="Oppo Reno 15" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Oppo Reno 15</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 6.999.000</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Oppo Reno 15" data-gambar="assets/images/oppo.png" data-harga="6999000" data-keterangan="Kamera potret jernih dengan desain stylish elegan khas Oppo.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Oppo Reno 15" data-harga="6999000" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 7 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/vivo.jpg" alt="Vivo X200" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Vivo X200</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 17.999.999</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Vivo X200" data-gambar="assets/images/vivo.jpg" data-harga="17999999" data-keterangan="Kamera Zeiss profesional untuk fotografi malam dan perbesaran optik presisi.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Vivo X200" data-harga="17999999" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Produk 8 -->
+                    <div class="product-card rounded-[30px] border border-slate-800 bg-slate-950/95 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.75)] hover:shadow-[0_28px_80px_-38px_rgba(14,165,233,0.18)] transition p-5 flex flex-col justify-between">
+                        <div>
+                            <img src="assets/images/infinix.png" alt="Infinix GT 20 Pro" class="w-full h-40 object-contain rounded-3xl mb-3 bg-slate-900"/>
+                            <h4 class="font-semibold text-slate-100">Infinix GT 20 Pro</h4>
+                            <p class="text-sky-300 font-bold mt-1">Rp 3.999.999</p>
+                        </div>
+                        <div class="space-y-3 mt-4">
+                            <button class="btn-detail w-full btn-secondary-glow text-slate-200 hover:text-white py-2 rounded-2xl text-xs font-semibold transition"
+                                    data-nama="Infinix GT 20 Pro" data-gambar="assets/images/infinix.png" data-harga="3999999" data-keterangan="HP gaming terjangkau dengan layar 144Hz dan lampu RGB Cyber Mecha.">
+                                🔍 Lihat Detail
+                            </button>
+                            <button data-nama="Infinix GT 20 Pro" data-harga="3999999" class="btn-tambah-keranjang w-full btn-primary-glow text-white py-3 rounded-2xl text-sm transition active:scale-95">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM TAMBAH PRODUK -->
+        <form id="form-produk" class="hero-card mt-10 p-8 rounded-[32px] max-w-xl mx-auto border border-slate-800 shadow-2xl shadow-slate-950/40">
+            <div class="flex items-center justify-between mb-6 gap-4">
+                <div>
+                    <h4 class="text-xl font-semibold text-white">Tambah Produk Baru</h4>
+                    <p class="text-slate-400 text-sm">Tambahkan produk dengan gambar dan keterangan agar tampil lengkap.</p>
+                </div>
+                <span class="rounded-3xl bg-sky-500/15 px-4 py-2 text-sky-200 text-xs uppercase tracking-[0.2em] font-semibold">New</span>
+            </div>
+            <label class="block text-slate-300 text-sm mb-1">Nama Produk</label>
+            <input type="text" id="input-nama" required class="w-full border border-slate-700 rounded-2xl px-4 py-3 mb-4 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" />
+            <label class="block text-slate-300 text-sm mb-1">Harga (Rp)</label>
+            <input type="number" id="input-harga" required min="0" class="w-full border border-slate-700 rounded-2xl px-4 py-3 mb-4 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" />
+            <label class="block text-slate-300 text-sm mb-1">Unggah Gambar Produk</label>
+            <input type="file" id="input-gambar" required accept="image/*" class="w-full border border-slate-700 rounded-2xl px-4 py-3 mb-2 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" />
+            <p class="text-slate-400 text-xs mb-4">Pilih file gambar dari perangkatmu.</p>
+            <label class="block text-slate-300 text-sm mb-1">Stok Produk</label>
+            <input type="number" id="input-stok" required min="0" value="10" class="w-full border border-slate-700 rounded-2xl px-4 py-3 mb-4 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" placeholder="Jumlah stok tersedia" />
+            <label class="block text-slate-300 text-sm mb-1">Keterangan Produk</label>
+            <textarea id="input-keterangan" rows="3" class="w-full border border-slate-700 rounded-2xl px-4 py-3 mb-4 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" placeholder="Detail produk, keunggulan, dan spesifikasi singkat"></textarea>
+            <p id="pesan-error" class="text-red-500 text-sm mb-3 hidden"></p>
+            <button type="submit" class="w-full bg-gradient-to-r from-sky-500 to-indigo-500 text-white py-3 rounded-2xl hover:brightness-110 transition font-semibold">
+                Tambahkan Produk
+            </button>
         </form>
 
-
-        <section id="about"><div class="bg-white py-12">
-        <div class="max-w-7xl mx-auto px-4">
-        <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">
-        Apa Kata Pelanggan Kami?
-        </h3>
-
-        <!-- flex-col di mobile, flex-row di tablet ke atas --> 
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="flex-1 bg-gray-50 rounded-xl p-6">
-            <p class="text-gray-600 italic">
-              "Pengiriman cepat dan barangnya sesuai foto. Recommended!"
-            </p>
-            <p class="mt-4 font-semibold text-gray-800">— Cefriska Arafina Riandi, Depok</p>
-          </div>
-
-          <div class="flex-1 bg-gray-50 rounded-xl p-6">
-            <p class="text-gray-600 italic">
-              "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
-            </p>
-            <p class="mt-4 font-semibold text-gray-800">— Riracha Phondechaphiphat, Thailand</p>
-          </div>
-
-          <div class="flex-1 bg-gray-50 rounded-xl p-6">
-            <p class="text-gray-600 italic">
-              "ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."
-            </p>
-            <p class="mt-4 font-semibold text-gray-800">— Chunsik, Multiverse</p>
-          </div>
-        </div>
-        </div>
-
-        </div>
-     </section>
+        <!-- TESTIMONI -->
+        <section id="about" class="max-w-7xl mx-auto px-4 mt-16 pb-16">
+            <div class="space-y-6 text-center">
+                <p class="text-sky-300 uppercase tracking-[0.3em] text-xs font-semibold">Ulasan Pelanggan</p>
+                <h3 class="text-3xl md:text-4xl font-bold text-white">Apa Kata Pelanggan Kami?</h3>
+                <p class="max-w-3xl mx-auto text-slate-400">Lebih banyak cerita positif dari pelanggan yang sudah merasakan pengalaman belanja modern dan nyaman di TokoKita.</p>
+            </div>
+            <div class="mt-10 grid gap-6 lg:grid-cols-3">
+                <div class="testimonial-card rounded-[30px] p-8 shadow-2xl shadow-slate-950/20">
+                    <p class="text-slate-300 italic leading-8">"Pengiriman cepat dan barangnya sesuai foto. Recommended!"</p>
+                    <p class="mt-6 font-semibold text-white">— Cefriska Arafina Riandi, Depok</p>
+                </div>
+                <div class="testimonial-card rounded-[30px] p-8 shadow-2xl shadow-slate-950/20">
+                    <p class="text-slate-300 italic leading-8">"ราคาสมเหตุสมผล คุณภาพโอเค จะกลับมาซื้ออีก."</p>
+                    <p class="mt-6 font-semibold text-white">— Riracha Phondechaphiphat, Thailand</p>
+                </div>
+                <div class="testimonial-card rounded-[30px] p-8 shadow-2xl shadow-slate-950/20">
+                    <p class="text-slate-300 italic leading-8">"Harga bersaing dan tampilan tokonya modern. Bikin belanja jadi lebih seru."</p>
+                    <p class="mt-6 font-semibold text-white">— Chunsik, Multiverse</p>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- FOOTRER -->
-    <footer class="bg-gray-900 text-gray-300"><div class="max-w-7xl mx-auto px-4 py-10">
-    <!--grid-cols-1 di mobile, grid-cols-3 di tablet ke atas -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-    <div>
-    <h5 class="text-white font-semibold mb-3">Tokokita</h5>
-    <p>Belanja online mudah, cepat, dan terpercaya sejak 2026.</p>
-    </div>
-
-    <div>
-    <h5 class="text-white font-semibold mb-3">Tautan Cepat</h5>
-    <ul class="space-y-2">
-    <li><a href="#catalog" class="hover:text-white">Katalog</a></li>
-    <li><a href="#about" class="hover:text-white">Tentang Kami</a></li>
-
-    </ul>
-    </div>
-
-    <div>
-    <h5 class="text-white font-semibold mb-3">Hubungi Kami</h5>
-    <p>Email: halo@tokokita.id</p>
-    <p>WhatsApp: 0878-5517-2338</p>
-
-    </div>
-    </div>
-
-    <hr class="border-gray-700 my-6" />
-    <p class="text-center text-xs">
-    &copy; 2026 TokoKita. Dibuat dalam Bootcamp Fullstack Web Development.
-    </p>
-
-    </div>
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+                <div>
+                    <h5 class="text-white font-semibold mb-3">TokoKita</h5>
+                    <p>Belanja online mudah, cepat, dan terpercaya sejak 2026.</p>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold mb-3">Tautan Cepat</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#catalog" class="hover:text-white transition">Katalog</a></li>
+                        <li><a href="#about" class="hover:text-white transition">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold mb-3">Hubungi Kami</h5>
+                    <p>Email: <a href="mailto:halo@tokokita.id" class="text-slate-200 hover:text-white">halo@tokokita.id</a></p>
+                    <p>WhatsApp: <a href="tel:087855172338" class="text-slate-200 hover:text-white">0878-5517-2338</a></p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+                &copy; 2026 TokoKita. Dibuat dalam Bootcamp Fullstack Web Development.
+            </div>
+        </div>
     </footer>
 
-<!-- Letakkan sebelum tag penutup <body> di index.html -->
-<script src="script.js" defer></script>
+    <!-- MODAL POP-UP KERANJANG BELANJA & CHECKOUT -->
+    <div id="modal-keranjang" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50 p-4 transition-all duration-300">
+        <div class="bg-slate-950 w-full max-w-md rounded-[32px] border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="bg-slate-900 text-slate-100 p-4 flex justify-between items-center border-b border-slate-800">
+                <h3 class="text-lg font-bold flex items-center gap-2">🛒 Keranjang Belanja</h3>
+                <button id="btn-tutup-modal" class="text-slate-400 hover:text-white font-bold text-xl w-10 h-10 rounded-full flex items-center justify-center transition">&times;</button>
+            </div>
+
+            <div id="daftar-keranjang-modal" class="p-4 overflow-y-auto space-y-3 flex-1">
+                <!-- Item di-generate via JavaScript -->
+            </div>
+
+            <div class="bg-slate-900 border-t border-slate-800 p-4 space-y-4">
+                <div>
+                    <label for="input-lokasi-pemesanan" class="block text-slate-400 text-sm mb-2">Lokasi Pemesanan</label>
+                    <input id="input-lokasi-pemesanan" type="text" placeholder="Masukkan lokasi pengiriman atau alamat" class="w-full border border-slate-700 rounded-2xl px-4 py-3 bg-slate-950 text-slate-100 focus:ring-2 focus:ring-sky-500 outline-none" />
+                    <p id="pesan-lokasi" class="text-red-400 text-xs mt-2 hidden">Lokasi pemesanan wajib diisi.</p>
+                </div>
+                <div class="flex justify-between items-center text-slate-300">
+                    <span class="font-medium">Total Pembayaran:</span>
+                    <span id="total-harga-modal" class="text-xl font-bold text-sky-300">Rp 0</span>
+                </div>
+                <button id="btn-proses-checkout" class="w-full bg-gradient-to-r from-cyan-500 to-sky-600 text-white font-bold py-3 rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                    <span>💳</span> Proses Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="script.js" defer></script>
 </body>
 </html>
